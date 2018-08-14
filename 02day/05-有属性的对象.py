@@ -1,5 +1,6 @@
 class ren:
-	def pao(self):
+	#作用:初始化属性
+	def pao(self):#实例化方法　默认被调用
 		print('跑')
 	def tiao(self):
 		print('跳')
@@ -12,7 +13,7 @@ class ren:
 
 
 
-nv=ren()
+nv=ren()#创建对象或实力
 nv.pao()
 nv.tiao()
 nv.ddm()
