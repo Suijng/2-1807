@@ -1,7 +1,5 @@
 import pygame
 from jingling import *
-pygame.font.init()
-font=pygame.font.SysFont(None,30)
 class PlaneGame(object):
 	def __init__(self):
 		print('初始化窗口')
@@ -11,17 +9,7 @@ class PlaneGame(object):
 		self.clock = pygame.time.Clock()
 		# 3. 调用私有方法，精灵和精灵组的创建
 		self.__create_sprites()
-
-		#敌机出现的时间
-		pygame.time.set_timer(CREATE_ENEMY_EVENT,500)#敌机时间
-		pygame.time.set_timer(CREATE_BULLET_EVENT,250)#子弹时间
-
-		#敌机的精灵组
-		self.enemy_group=pygame.sprite.Group()
-		#敌机销毁精灵组
-		self.enemy1_down_group=pygame.sprite.Group()
-		self.count=0
-		self.score=0#分数
+		pygame.time.set_timer(CREATE_ENEMY_EVENT,200)#定时
 
 
 	def start_game(self):
@@ -52,14 +40,11 @@ class PlaneGame(object):
 	def __event_handler(self):
 		'''监听事件'''
 		for event in pygame.event.get():
-			#判断是否退出游戏
 			if event.type==pygame.QUIT:
 				planeGame.__game_over()
 			elif event.type==CREATE_ENEMY_EVENT:#定时敌机出现
 				print('敌机出场')
 				self.enemy_group.add(EnemySprite())
-			elif event.type==CREATE_BULLET_EVENT:#定时子弹
-				self.hero.fire()
 
 		keys_pressed = pygame.key.get_pressed()
 		if keys_pressed[pygame.K_RIGHT]:
@@ -79,10 +64,8 @@ class PlaneGame(object):
 
 	def __check_collide(self):
 		'''碰撞检测'''
-		#1.子弹摧毁敌机,返回敌机的精灵
-		enemy_down=pygame.sprite.groupcollide(self.hero.bullet_group,self.enemy_group,True,True)
-		#加入销毁组
-		enemy1_down_group.add(enemy_down)
+		#1.子弹摧毁敌机
+		pygame.sprite.groupcollide(self.hero.bullet_group,self.enemy_group,True,True)
 		#2.敌机摧毁英雄
 		enemies=pygame.sprite.spritecollide(self.hero,self.enemy_group,True)
 		
@@ -107,30 +90,12 @@ class PlaneGame(object):
 		self.hero.bullet_group.update()
 		self.hero.bullet_group.draw(self.screen)
 
-		self.drawText(str(self.score),SCREEN_RECT.width-30,50)#绘制分数
 
-		for enemy1_down in enemy1_down_group:
-			self.screen.blit(enemy1_down_surface[enemy1_down.down_index],enemy1_down.rect)
-			if self.count%15==0:
-				enemy1_down.down_index+=1
-				if enemy1_down.down_index==4:
-					self.score+=5#一次次加5分
-					enemy1_down_group.remove(enemy1_down)
-					print(self.score)
-
-
-	@staticmethod
-	def __game_over():#游戏结束
-		print('你已经挂了')
-		pygame.quit()
-		exit()
-
-	def drawText(self,text,posx,posy,textHeight=48,fontColor=(0,0,0),backgroudColor=(255,255,255)):
-			fontObj = pygame.font.Font(None,textHeight)  # 通过字体文件获得字体对象
-			textSurfaceObj = fontObj.render(text, True,fontColor,backgroudColor)  # 配置要显示的文字
-			textRectObj = textSurfaceObj.get_rect()  # 获得要显示的对象的rect
-			textRectObj.center = (posx, posy)  # 设置显示对象的坐标
-			self.screen.blit(textSurfaceObj, textRectObj)  # 绘制字	
+@staticmethod
+def __game_over():#游戏结束
+	print('你已经挂了')
+	pygame.quit()
+	exit()
 
 
 if __name__=='__main__':
