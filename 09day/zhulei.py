@@ -14,7 +14,7 @@ class PlaneGame(object):
 
 		#敌机出现的时间
 		pygame.time.set_timer(CREATE_ENEMY_EVENT,500)#敌机时间
-		pygame.time.set_timer(CREATE_BULLET_EVENT,250)#子弹时间
+		pygame.time.set_timer(CREATE_BULLET_EVENT,250)#子弹时间越大越慢
 
 		#敌机的精灵组
 		self.enemy_group=pygame.sprite.Group()
@@ -27,6 +27,7 @@ class PlaneGame(object):
 	def start_game(self):
 		print("开始游戏...")
 		while True:
+			self.count+=1
 			# 1. 设置刷新帧率
 			self.clock.tick(60)
 			# 2. 事件监听
@@ -67,9 +68,9 @@ class PlaneGame(object):
 		elif keys_pressed[pygame.K_LEFT]:
 			self.hero.speed = -12
 		elif keys_pressed[pygame.K_UP]:
-			self.hero.speeds=-12
+			self.hero.speeds = -12
 		elif keys_pressed[pygame.K_DOWN]:
-			self.hero.speeds=12
+			self.hero.speeds = 12
 		else:
 			self.hero.speed = 0
 			self.hero.speeds=0
@@ -111,9 +112,9 @@ class PlaneGame(object):
 
 		for enemy1_down in enemy1_down_group:
 			self.screen.blit(enemy1_down_surface[enemy1_down.down_index],enemy1_down.rect)
-			if self.count%15==0:
+			if self.count%10==0:#爆炸索引间隔时间
 				enemy1_down.down_index+=1
-				if enemy1_down.down_index==4:
+				if enemy1_down.down_index==3:#4张爆炸效果 3个索引
 					self.score+=5#一次次加5分
 					enemy1_down_group.remove(enemy1_down)
 					print(self.score)

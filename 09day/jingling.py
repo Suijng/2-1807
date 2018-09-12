@@ -15,7 +15,7 @@ bg4 = pygame.image.load('./images/enemy0_down4.png')
 enemy1_down_group=pygame.sprite.Group()
 
 #爆炸图片放到列表里
-enemy1_down_surface = []
+enemy1_down_surface=[]
 enemy1_down_surface.append(bg1)
 enemy1_down_surface.append(bg2)
 enemy1_down_surface.append(bg3)

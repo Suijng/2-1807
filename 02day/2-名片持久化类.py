@@ -4,7 +4,7 @@ class guanli():
 		while True:
 			name=input('输入名字:')
 			age=int(input('输入年龄:'))
-			lists.append(name,age)
+			lists.append(name)
 			lists.append(age)
 			f=open('1.txt','w')
 			f.write(str(lists))
